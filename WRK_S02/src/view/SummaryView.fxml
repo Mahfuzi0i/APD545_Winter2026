@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+/**********************************************
+ Workshop 2
+ Course:APD545 - Semester 5
+ Last Name:Mahfuz
+ First Name:Abdullah Al
+ ID:180377236
+ Section:NAA
+ This assignment represents my own work in accordance with Seneca Academic Policy.
+ Signature - Abdullah
+ Date:03 February 2026
+ **********************************************/
+ -->
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="12" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SummaryController">
+    <padding>
+        <Insets bottom="15" left="15" right="15" top="15" />
+    </padding>
+
+    <Label style="-fx-font-size:18px; -fx-font-weight:bold;" text="System Summary" />
+
+    <HBox spacing="10">
+        <Label text="View Data:" />
+        <ComboBox fx:id="dataTypeCombo" onAction="#loadData" prefHeight="26.0" prefWidth="129.0" promptText="Select a Type" />
+    </HBox>
+
+    <TextArea fx:id="displayArea" prefHeight="400" prefWidth="502.0" />
+   <ButtonBar prefHeight="40.0" prefWidth="146.0">
+     <buttons>
+       <Button mnemonicParsing="false" onAction="#closeWindow" prefHeight="26.0" prefWidth="85.0" text="Close" />
+     </buttons>
+   </ButtonBar>
+
+</VBox>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+/**********************************************
+ Workshop 2
+ Course:APD545 - Semester 5
+ Last Name:Mahfuz
+ First Name:Abdullah Al
+ ID:180377236
+ Section:NAA
+ This assignment represents my own work in accordance with Seneca Academic Policy.
+ Signature - Abdullah
+ Date:03 February 2026
+ **********************************************/
+ -->
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="controller.MainController">
+
+    <center>
+        <VBox spacing="12">
+            <padding>
+                <Insets top="15" right="15" bottom="15" left="15"/>
+            </padding>
+
+            <Label text="Add Vehicle" style="-fx-font-size:16px; -fx-font-weight:bold;"/>
+
+            <HBox spacing="10">
+                <TextField fx:id="makeField" promptText="Make"/>
+                <TextField fx:id="modelField" promptText="Model"/>
+                <TextField fx:id="yearField" promptText="Year"/>
+                <ComboBox fx:id="typeCombo" promptText="Type"/>
+                <Button text="Save Vehicle" onAction="#saveVehicle"/>
+            </HBox>
+
+            <Separator/>
+
+            <Label text="Select Vehicle" style="-fx-font-size:16px; -fx-font-weight:bold;"/>
+            <ComboBox fx:id="vehicleCombo" promptText="Choose Vehicle"/>
+
+            <Separator/>
+
+            <Label text="Add Maintenance Record" style="-fx-font-size:16px; -fx-font-weight:bold;"/>
+
+            <HBox spacing="10">
+                <DatePicker fx:id="maintDate" promptText="Select maintenance date"/>
+                <TextField fx:id="descField" promptText="Description"/>
+                <TextField fx:id="costField" promptText="Cost"/>
+                <Button text="Save Maintenance" onAction="#saveMaintenance"/>
+            </HBox>
+
+            <Separator/>
+
+            <Label text="Add Usage Log" style="-fx-font-size:16px; -fx-font-weight:bold;"/>
+
+            <HBox spacing="10">
+                <DatePicker fx:id="startDatePicker" promptText="Select start date"/>
+                <DatePicker fx:id="endDatePicker" promptText="Select end date"/>
+                <TextField fx:id="kmField" promptText="Kilometers Driven"/>
+                <Button text="Save Usage" onAction="#saveUsage"/>
+            </HBox>
+
+            <Separator/>
+
+            <Button text="View Summary" onAction="#openSummary" maxWidth="200"/>
+
+        </VBox>
+    </center>
+
+</BorderPane>
