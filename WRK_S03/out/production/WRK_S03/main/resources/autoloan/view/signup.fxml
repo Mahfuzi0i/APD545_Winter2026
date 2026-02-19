@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**********************************************
+Workshop 03
+Course: APD545 - Semester Winter 2026
+Last Name: Mahfuz
+First Name: Abdullah Al
+ID:180377236
+Section:NAA
+This assignment represents my own work in accordance with Seneca Academic Policy.
+Signature: Abdullah Al Mahfuz
+Date:19 Feb 2026
+**********************************************/
+-->
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefWidth="1400.0" prefHeight="900.0"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="autoloan.controller.SignupController">
+
+    <center>
+        <VBox alignment="CENTER" spacing="30">
+
+            <!-- Title -->
+            <Label text="CREATE NEW ACCOUNT"
+                   style="-fx-font-size:28px; -fx-font-weight:bold;" />
+
+            <!-- Form Container -->
+            <VBox spacing="18" alignment="CENTER">
+
+                <!-- Username -->
+                <HBox spacing="15" alignment="CENTER">
+                    <Label text="Username:" prefWidth="150" />
+                    <TextField fx:id="usernameField" prefWidth="280" promptText="exampleUser"/>
+                </HBox>
+
+                <!-- Email -->
+                <HBox spacing="15" alignment="CENTER">
+                    <Label text="Email:" prefWidth="150"/>
+                    <TextField fx:id="emailField" prefWidth="280" promptText="email@example.com"/>
+                </HBox>
+
+                <!-- Password -->
+                <HBox spacing="15" alignment="CENTER">
+                    <Label text="Password:" prefWidth="150" />
+                    <PasswordField fx:id="passwordField" prefWidth="280" promptText="password"/>
+                </HBox>
+
+                <!-- Confirm Password -->
+                <HBox spacing="15" alignment="CENTER">
+                    <Label text="Confirm Password:" prefWidth="150" />
+                    <PasswordField fx:id="confirmField" prefWidth="280" promptText="confirm password"/>
+                </HBox>
+
+            </VBox>
+
+            <!-- Buttons -->
+            <HBox spacing="25" alignment="CENTER">
+                <Button text="Create Account"
+                        prefWidth="180"
+                        prefHeight="40"
+                        onAction="#handleSignup"/>
+
+                <Button text="Back to Login"
+                        prefWidth="180"
+                        prefHeight="40"
+                        onAction="#backToLogin"/>
+            </HBox>
+
+            <!-- Message -->
+            <Label fx:id="messageLabel"
+                   style="-fx-font-size:14px;"
+                   textFill="red"/>
+
+        </VBox>
+    </center>
+
+</BorderPane>

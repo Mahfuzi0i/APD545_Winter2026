@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**********************************************
+Workshop 03
+Course: APD545 - Semester Winter 2026
+Last Name: Mahfuz
+First Name: Abdullah Al
+ID:180377236
+Section:NAA
+This assignment represents my own work in accordance with Seneca Academic Policy.
+Signature: Abdullah Al Mahfuz
+Date:19 Feb 2026
+**********************************************/
+-->
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox alignment="CENTER"
+      prefWidth="1400.0"
+      prefHeight="900.0"
+      spacing="30"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="autoloan.controller.LoginController">
+
+    <padding>
+        <Insets top="40" bottom="40"/>
+    </padding>
+
+    <!-- Title -->
+    <Label text="USER LOGIN"
+           style="-fx-font-size:30px; -fx-font-weight:bold;"/>
+
+    <!-- FORM -->
+    <VBox spacing="18" alignment="CENTER">
+
+        <HBox spacing="15" alignment="CENTER">
+            <Label text="Username:" prefWidth="150"/>
+            <TextField fx:id="usernameField" prefWidth="280" promptText="Enter User Name"/>
+        </HBox>
+
+        <HBox spacing="15" alignment="CENTER">
+            <Label text="Password:" prefWidth="150"/>
+            <PasswordField fx:id="passwordField" prefWidth="280" promptText="Enter Password"/>
+        </HBox>
+
+    </VBox>
+
+    <!-- Buttons -->
+    <HBox spacing="25" alignment="CENTER">
+        <Button text="Login"
+                prefWidth="160"
+                prefHeight="40"
+                onAction="#handleLogin"/>
+
+        <Button text="Back"
+                prefWidth="160"
+                prefHeight="40"
+                onAction="#backToHome"/>
+    </HBox>
+
+    <!-- Error Message -->
+    <Label fx:id="messageLabel"
+           style="-fx-font-size:14px;"
+           textFill="red"/>
+
+    <!-- Signup Section -->
+    <VBox spacing="8" alignment="CENTER">
+        <Label text="Don't have an account?"/>
+        <Button text="Create Account"
+                prefWidth="180"
+                onAction="#openSignup"/>
+    </VBox>
+
+</VBox>

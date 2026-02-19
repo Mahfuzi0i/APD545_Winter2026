@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**********************************************
+Workshop 03
+Course: APD545 - Semester Winter 2026
+Last Name: Mahfuz
+First Name: Abdullah Al
+ID:180377236
+Section:NAA
+This assignment represents my own work in accordance with Seneca Academic Policy.
+Signature: Abdullah Al Mahfuz
+Date:19 Feb 2026
+**********************************************/
+-->
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="autoloan.controller.LoanController">
+
+    <content>
+
+        <VBox alignment="TOP_CENTER" prefHeight="900.0" prefWidth="1400" spacing="30">
+
+            <padding>
+                <Insets bottom="40" left="80" right="80" top="40" />
+            </padding>
+
+            <!-- TITLE -->
+            <Label style="-fx-font-size:30px; -fx-font-weight:bold;" text="AUTO LOAN APPLICATION" />
+
+            <!-- MAIN 3 COLUMN LAYOUT -->
+            <HBox alignment="TOP_CENTER" spacing="90">
+
+                <!-- ================= CUSTOMER ================= -->
+                <VBox spacing="18">
+
+                    <Label style="-fx-font-size:18px; -fx-font-weight:bold;" text="Customer Information" />
+
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+                        <Label prefWidth="150" text="Name:" />
+                        <TextField fx:id="nameField" prefWidth="260" promptText="Enter your name" />
+                    </HBox>
+
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+                        <Label prefWidth="150" text="Phone:" />
+                        <TextField fx:id="phoneField" prefWidth="260" promptText="Enter your Phone number" />
+                    </HBox>
+
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+                        <Label prefWidth="150" text="City:" />
+                        <TextField fx:id="cityField" prefWidth="260" promptText="Enter your City" />
+                    </HBox>
+
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+                        <Label prefWidth="150" text="Province:" />
+                        <ComboBox fx:id="provinceBox" prefWidth="260" promptText="Select your Province" />
+                    </HBox>
+
+                </VBox>
+
+                <!-- ================= VEHICLE ================= -->
+                <VBox spacing="18">
+
+                    <Label style="-fx-font-size:18px; -fx-font-weight:bold;" text="Vehicle Information" />
+
+                    <HBox spacing="10">
+                        <Label prefWidth="150" text="Type:" />
+                        <VBox spacing="5">
+                            <RadioButton fx:id="carRadio" text="Car" />
+                            <RadioButton fx:id="truckRadio" text="Truck" />
+                            <RadioButton fx:id="vanRadio" text="Family Van" />
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="10">
+                        <Label prefWidth="150" text="Condition:" />
+                        <VBox spacing="5">
+                            <RadioButton fx:id="newRadio" text="New" />
+                            <RadioButton fx:id="usedRadio" text="Used" />
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="15">
+                        <Label prefWidth="150" text="Vehicle Price ($):" />
+                        <TextField fx:id="priceField" prefWidth="260" promptText="Enter vehicle price" />
+                    </HBox>
+
+                </VBox>
+
+                <!-- ================= LOAN ================= -->
+                <VBox spacing="18">
+
+                    <Label style="-fx-font-size:18px; -fx-font-weight:bold;" text="Loan Information" />
+
+                    <HBox spacing="15">
+                        <Label prefWidth="150" text="Down Payment ($):" />
+                        <TextField fx:id="downField" prefWidth="260" promptText="Enter Down Payment amount" />
+                    </HBox>
+
+                    <Label text="Interest Rate" />
+                    <HBox spacing="12">
+                        <RadioButton fx:id="rate099" text="0.99%" />
+                        <RadioButton fx:id="rate199" text="1.99%" />
+                        <RadioButton fx:id="rate299" text="2.99%" />
+                        <RadioButton fx:id="rateOther" text="Other" />
+                    </HBox>
+
+                    <HBox spacing="15">
+                        <Label prefWidth="150" text="Other Rate (%):" />
+                        <TextField fx:id="otherRateField" prefWidth="260" promptText="Specify the rate" />
+                    </HBox>
+
+                    <Label text="Duration (months)" />
+                    <Slider fx:id="durationSlider" majorTickUnit="12" max="96" min="12" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="36" />
+
+                    <!-- Estimated Payment -->
+                    <Label text="Payment Frequency" />
+                    <HBox spacing="15">
+                        <RadioButton fx:id="weeklyRadio" text="Weekly" />
+                        <RadioButton fx:id="biweeklyRadio" text="Bi-weekly" />
+                        <RadioButton fx:id="monthlyRadio" text="Monthly" />
+                    </HBox>
+
+                    <HBox spacing="15">
+                        <Button onAction="#calculate" prefHeight="26.0" prefWidth="160.0" text="Calculate Payment" />
+                        <Button onAction="#clearForm" prefHeight="26.0" prefWidth="178.0" text="Reset" />
+                    </HBox>
+
+                    <VBox alignment="CENTER" spacing="8" style="-fx-background-color: #efefef; -fx-padding: 16;">
+                        <Label style="-fx-font-size:22px; -fx-font-weight:700; -fx-text-fill:#444;" text="Estimated Payment:" />
+                        <Label fx:id="paymentLabel" style="-fx-font-size:44px; -fx-font-weight:800; -fx-text-fill:#333;" text="\$0.00" />
+                    </VBox>
+
+                    <!-- Save + Amortization -->
+                    <HBox spacing="15">
+                        <Button onAction="#saveLoan" prefHeight="26.0" prefWidth="162.0" text="Save Loan" />
+                        <Button onAction="#openAmortization" prefHeight="26.0" prefWidth="177.0" text="View Amortization" />
+                    </HBox>
+
+                </VBox>
+
+            </HBox>
+
+            <!-- ================= SAVED LOANS ================= -->
+            <VBox alignment="CENTER" spacing="12">
+
+                <Separator prefWidth="1000" />
+
+                <Label style="-fx-font-size:18px; -fx-font-weight:bold;" text="Saved Loan Rates" />
+
+                <ListView fx:id="savedLoans" prefHeight="66.0" prefWidth="1128.0" />
+
+            </VBox>
+
+        </VBox>
+
+    </content>
+
+</ScrollPane>
