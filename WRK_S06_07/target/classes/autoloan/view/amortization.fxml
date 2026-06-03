@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**********************************************
+ Workshop 06 & 07
+ Course: APD545 - Semester Winter 2026
+ Last Name: Mahfuz
+ First Name: Abdullah Al
+ ID: 180377236
+ Section: NAA
+ This assignment represents my own work in accordance with Seneca Academic Policy.
+ Signature: Abdullah Al Mahfuz
+ Date: 11 March 2026
+ **********************************************/
+-->
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      fx:controller="autoloan.controller.LoanAmortizationController"
+      alignment="TOP_CENTER"
+      spacing="20"
+      prefWidth="1400"
+      prefHeight="900">
+
+    <padding>
+        <Insets top="30" right="50" bottom="30" left="50"/>
+    </padding>
+
+    <!-- TITLE -->
+    <Label text="AMORTIZATION SCHEDULE"
+           style="-fx-font-size:26px; -fx-font-weight:bold;" />
+
+    <!-- TABLE -->
+    <TableView fx:id="table" prefWidth="1200" prefHeight="650">
+
+        <columns>
+            <TableColumn fx:id="monthCol" text="Month" prefWidth="150"/>
+            <TableColumn fx:id="interestCol" text="Interest Paid" prefWidth="250"/>
+            <TableColumn fx:id="principalCol" text="Principal Paid" prefWidth="250"/>
+            <TableColumn fx:id="balanceCol" text="Remaining Balance" prefWidth="300"/>
+        </columns>
+
+    </TableView>
+
+    <!-- BACK BUTTON -->
+    <HBox alignment="CENTER">
+        <Button text="Back to Loan Application" onAction="#closeWindow" prefWidth="220" prefHeight="40"/>
+    </HBox>
+
+</VBox>
+
+

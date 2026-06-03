@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+/**********************************************
+ Workshop 06 & 07
+ Course: APD545 - Semester Winter 2026
+ Last Name: Mahfuz
+ First Name: Abdullah Al
+ ID: 180377236
+ Section: NAA
+ This assignment represents my own work in accordance with Seneca Academic Policy.
+ Signature: Abdullah Al Mahfuz
+ Date: 11 March 2026
+ **********************************************/
+-->
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" prefHeight="900.0" prefWidth="1400.0" spacing="30" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="autoloan.controller.LoginController">
+
+    <padding>
+        <Insets bottom="40" top="40" />
+    </padding>
+
+    <!-- Title -->
+    <Label style="-fx-font-size:30px; -fx-font-weight:bold;" text="USER LOGIN" />
+
+    <!-- FORM -->
+    <VBox alignment="CENTER" spacing="18">
+
+        <HBox alignment="CENTER" spacing="15">
+            <Label prefHeight="40.0" prefWidth="91.0" text="Username:" />
+            <TextField fx:id="usernameField" prefHeight="38.0" prefWidth="280" promptText="Enter User Name" />
+        </HBox>
+
+        <HBox alignment="CENTER" spacing="15">
+            <Label prefHeight="35.0" prefWidth="88.0" text="Password:" />
+            <PasswordField fx:id="passwordField" prefHeight="42.0" prefWidth="280" promptText="Enter Password" />
+        </HBox>
+
+    </VBox>
+
+    <!-- Buttons -->
+    <HBox alignment="CENTER" spacing="25">
+        <Button onAction="#handleLogin" prefHeight="40" prefWidth="160" text="Login" />
+
+        <Button onAction="#backToHome" prefHeight="40" prefWidth="160" text="Back" />
+    </HBox>
+
+    <!-- Error Message -->
+    <Label fx:id="messageLabel" style="-fx-font-size:14px;" textFill="red" />
+
+    <!-- Signup Section -->
+    <VBox alignment="CENTER" spacing="8">
+        <Label text="Don't have an account?" />
+        <Button onAction="#openSignup" prefWidth="180" text="Create Account" />
+    </VBox>
+
+</VBox>
+

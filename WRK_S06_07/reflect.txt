@@ -1,0 +1,155 @@
+/**********************************************
+ Workshop 06 & 07
+ Course: APD545 - Semester Winter 2026
+ Last Name: Mahfuz
+ First Name: Abdullah Al
+ ID: 180377236
+ Section: NAA
+ This assignment represents my own work in accordance with Seneca Academic Policy.
+ Signature: Abdullah Al Mahfuz
+ Date: 11 March 2026
+ **********************************************/
+
+=============================================================================
+REFLECTION - Workshop 6 & 7: Auto Loan Application Upgrade
+=============================================================================
+
+-------------------------------------------------------------------------------
+1. Inversion of Control (IoC): Google Guice vs Manual Dependency Injection
+-------------------------------------------------------------------------------
+
+In Workshop 3, Manual DI meant explicitly constructing every object inside
+AppConfig and passing references through AppInitializer.injectDependencies().
+This worked for a small app but had real weaknesses: every class knew about
+AppConfig (tight coupling), adding a new dependency required touching AppConfig
+AND AppInitializer, and unit testing individual classes was harder because you
+had to instantiate the full graph manually.
+
+Switching to Google Guice in this workshop felt significantly cleaner. I
+declared interface-to-implementation bindings once in AppModule, and from that
+point forward every controller simply declared what it needed via an @Inject
+constructor. Guice resolves the entire dependency graph automatically at
+startup.
+
+The biggest challenge was wiring FXMLLoader to Guice. By default FXMLLoader
+calls the no-arg constructor on the fx:controller class, which bypasses Guice
+entirely. The fix was:
+    loader.setControllerFactory(injector::getInstance);
+This one line tells FXMLLoader to delegate every controller creation to Guice,
+so @Inject constructors are honoured. Every new FXMLLoader call in every
+controller also needs this line, which required careful refactoring.
+
+Long-term benefits: adding a new service (e.g., an EmailService) only requires
+a new bind() line in AppModule and an @Inject parameter in the receiving class.
+No global config file grows. Classes are fully testable with mock bindings.
+
+-------------------------------------------------------------------------------
+2. 3-Tier Architecture: The Value of the Service Layer
+-------------------------------------------------------------------------------
+
+In Workshop 3, controllers sometimes talked to repositories directly (e.g.,
+LoginController called UserRepository.validateLogin()). This mixed UI concerns
+with data-access logic.
+
+In this upgrade, a Service Layer (UserService, LoanService) sits between
+controllers and repositories:
+
+    Controller → Service → Repository
+
+The architectural value is separation of concerns:
+- Controllers only deal with what the user sees and clicks.
+- Services encapsulate business/security logic (BCrypt hashing, validation).
+- Repositories only execute SQL or file I/O.
+
+If SignupController talked directly to the SQLite database it would:
+  a) Know SQL implementation details (fragile to DB changes).
+  b) Have to perform BCrypt hashing itself (mixing concerns).
+  c) Be impossible to test without a real DB connection.
+  d) Violate the Single Responsibility Principle.
+
+With a service layer, swapping SQLite for PostgreSQL only requires a new
+SqlUserRepository implementation and one line change in AppModule. The
+controller and service are untouched.
+
+-------------------------------------------------------------------------------
+3. Security: Why Plain-Text Passwords Are a Critical Vulnerability
+-------------------------------------------------------------------------------
+
+Storing plain-text passwords means that if the database is ever exposed (SQL
+injection, backup leak, insider threat), every user's password is immediately
+readable. Since many people reuse passwords across sites, a single breach can
+compromise accounts on unrelated platforms.
+
+BCrypt secures credentials through several mechanisms:
+  1. One-way hashing: the hash cannot be reversed to recover the plain-text.
+  2. Salting: BCrypt.gensalt() generates a random salt, so identical passwords
+     produce completely different hashes, defeating rainbow table attacks.
+  3. Cost factor (work factor): BCrypt deliberately runs slowly, making
+     brute-force cracking computationally expensive even if the hash is stolen.
+
+In this application:
+  - UserService.register() calls BCrypt.hashpw(plainText, BCrypt.gensalt())
+    before calling the repository.
+  - UserService.authenticate() calls BCrypt.checkpw(entered, storedHash).
+  - Plain-text passwords are never stored anywhere in the system.
+
+-------------------------------------------------------------------------------
+4. Data Persistence: SQLite vs Local File I/O
+-------------------------------------------------------------------------------
+
+SQLite (SqlLoanRepository / SqlUserRepository):
+  Pros:
+    - Structured, queryable data with SQL (filter, sort, join).
+    - ACID transactions ensure data integrity.
+    - Handles concurrent reads more gracefully.
+    - Scales to many records without performance degradation.
+  Cons:
+    - Requires a JDBC driver dependency.
+    - Schema migration needed when model changes.
+    - Not easily human-readable without a DB browser tool.
+
+Local File I/O (FileLoanRepository - JSON via Gson):
+  Pros:
+    - Simple to implement; human-readable output.
+    - Portable: the JSON file can be emailed, version-controlled, or inspected
+      in any text editor.
+    - No server or external tool required.
+  Cons:
+    - No query capability; must load the entire file to find one record.
+    - Concurrent writes can corrupt the file.
+    - Less scalable for large datasets.
+
+In a real-world auto loan application:
+  - Relational database (SQLite or larger RDBMS): User accounts, loan records,
+    payment history, customer PII – anything requiring integrity, queries, or
+    auditability.
+  - Local serialized file: Application settings/preferences, cached
+    amortization exports, user-initiated backups, or offline data exports
+    to share with an advisor.
+
+-------------------------------------------------------------------------------
+5. General Reflection: Most Challenging Integration
+-------------------------------------------------------------------------------
+
+The most challenging part was integrating Guice with JavaFX's FXMLLoader
+controller lifecycle. JavaFX assumes it creates controllers; Guice assumes it
+creates objects. Bridging these with setControllerFactory() was conceptually
+simple once I understood it, but the mistake I initially made was only setting
+the factory on the first FXMLLoader in MainApp and forgetting to set it on every
+subsequent loader inside controllers (login → loan, login → amortization, etc.).
+This caused NullPointerExceptions on @Inject fields at runtime.
+
+The fix was to make the Injector accessible via a static method on MainApp and
+apply it consistently:
+    loader.setControllerFactory(MainApp.getInjector()::getInstance);
+
+This experience reinforced that IoC containers and UI frameworks have different
+object-creation assumptions, and bridging them requires a single, consistent
+hook point in every place where the framework creates objects.
+
+Another challenge was file serialization. JavaFX Property objects (like
+SimpleStringProperty) are not natively serializable with Java's built-in
+ObjectOutputStream. I resolved this by introducing a LoanDto inner class inside
+FileLoanRepository that holds only plain primitives and Strings, converting
+to/from Loan objects at the boundary. Gson serializes these plain POJOs cleanly.
+
