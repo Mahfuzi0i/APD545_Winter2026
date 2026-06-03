@@ -1,0 +1,67 @@
+﻿Transactional Integrity
+In the Resource Allocator, the right-side "Current Workload" table allows the manager to edit hours before deciding whether to confirm or cancel. In my implementation, edits in that table are staged in UI-level row models (workload rows) first. The actual domain assignments are only persisted when the user clicks Confirm. If the user clicks Cancel, the dialog closes and the staged edits are discarded, so no business data is changed.
+
+This behavior is important for transactional integrity: either the full allocation operation succeeds as one logical unit, or nothing is committed. The allocation operation has two parts: (1) reducing existing hours on other projects and (2) adding the new assignment to the current project. The application should treat this as a single user intent. If Cancel is clicked, the intent is abandoned and data remains unchanged.
+
+If we edited live objects directly while the user typed, there would be significant production risk:
+1. Partial commits: some rows may already be changed before the user confirms, creating inconsistent intermediate states.
+2. Broken auditability: it becomes hard to distinguish tentative edits from approved decisions.
+3. Concurrency issues: another process or user could read half-finished values.
+4. Validation bypass: business rules (for example, total <= 40) may be violated temporarily or silently persisted.
+5. Poor UX trust: users expect Cancel to revert all edits; direct mutation breaks that expectation.
+
+A robust enterprise pattern is to use a working copy (or command buffer), validate all changes, then apply them in a single commit path. If any validation fails, the whole operation is rolled back.
+
+
+Scalability
+Currently, total allocated hours for an employee are computed by scanning project lists and assignment lists. That approach is acceptable for small datasets but scales poorly. With 1,000,000 records, repeated full scans would cause noticeable latency.
+
+A concrete optimization is to maintain an index keyed by employee ID in the repository/service layer:
+- Map<String, Double> employeeTotalHoursIndex
+- Optional secondary index: Map<String, List<Assignment>> assignmentsByEmployee
+
+How it works:
+1. On startup (or load), build the index once from source data.
+2. On assignment create/update/delete, update the index incrementally.
+3. Availability check becomes: 40 - employeeTotalHoursIndex.get(employeeId).
+
+Time complexity impact:
+- Current approach (scan all assignments): O(N) per availability check.
+- Indexed lookup approach: O(1) average per availability check.
+- Update operation on assignment change: O(1) average for the totals index.
+
+For very large systems, this can be combined with:
+- Database-level indexed aggregates/materialized views.
+- Event-driven cache updates.
+- Read-through cache with invalidation policy.
+
+This gives near-instant availability checks while keeping correctness by synchronizing index updates with assignment writes.
+
+
+Design Patterns (Association Class: Assignment)
+Using Assignment as an association class between Project and Employee is architecturally superior to storing employee links in a plain HashMap/List inside Project.
+
+Why Assignment is better:
+1. It models the relationship as a first-class domain concept.
+   The relationship itself has data: role, allocatedHours, and derived cost. This is not just "Project contains Employee"; it is "Employee participates in Project with specific role and effort." 
+
+2. It preserves extensibility.
+   New relationship attributes can be added cleanly (for example: startDate, endDate, billableFlag, utilizationCategory, notes) without changing unrelated models.
+
+3. It improves encapsulation and behavior placement.
+   Relationship-specific logic (for example getCost binding, hours property behavior, validation hooks) belongs in Assignment, not spread across Project or ad-hoc map structures.
+
+4. It supports bidirectional queries and analytics.
+   Resource allocation requires querying by employee across many projects. Association objects make these queries explicit and maintainable.
+
+5. It aligns with UML and DDD clarity.
+   The model communicates intent clearly to other developers and matches the workshop’s architectural goals (inheritance, abstraction, encapsulation, and clean domain relationships).
+
+If Assignment did not exist and we used only a HashMap/List in Project, we would face key limitations:
+- No natural place for role/hours/cost behavior tied to the relationship.
+- Higher risk of duplicated or inconsistent logic.
+- Harder validation and auditing of relationship changes.
+- Reduced maintainability as requirements evolve.
+- Weaker support for querying and reporting across project/employee links.
+
+In short, the Assignment association class is the correct object-oriented representation for this problem because the relationship has its own state and behavior, not just a simple reference.

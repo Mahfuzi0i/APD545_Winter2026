@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**********************************************
+Workshop 4&5
+Course: APD545 - Semester Winter 2026
+Last Name: Mahfuz
+First Name: Abdullah Al
+ID:180377236
+Section:NAA
+This assignment represents my own work in accordance with Seneca Academic Policy.
+Signature: Abdullah Al Mahfuz
+Date: 24 Feb 2026
+**********************************************/
+-->
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" prefHeight="900" prefWidth="1400" spacing="15" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nexus.controller.LoginController">
+
+    <padding>
+        <Insets bottom="50" left="50" right="50" top="50" />
+    </padding>
+
+    <Label style="-fx-font-size: 30px; -fx-font-weight: bold;" text="Nexus Consulting" />
+    <Label text="Enter your log in credentials"/>
+
+    <VBox alignment="CENTER" spacing="15">
+
+        <HBox alignment="CENTER" spacing="15">
+            <Label prefHeight="18.0" prefWidth="83.0" text="User Name:" />
+            <TextField fx:id="usernameField" prefHeight="34.0" prefWidth="174.0" promptText="Enter user name" />
+        </HBox>
+
+        <HBox alignment="CENTER" spacing="23">
+            <Label prefHeight="18.0" prefWidth="74.0" text="Password:" />
+            <PasswordField fx:id="passwordField" prefHeight="36.0" prefWidth="175.0" promptText="Password" />
+        </HBox>
+
+    </VBox>
+
+    <HBox alignment="CENTER" spacing="20">
+        <Button defaultButton="true" maxWidth="200" onAction="#handleLogin" prefHeight="40.0" prefWidth="132.0" text="Login" />
+    </HBox>
+
+    <Label fx:id="errorLabel" text="Invalid Credentials" textFill="RED" visible="false" />
+
+</VBox>

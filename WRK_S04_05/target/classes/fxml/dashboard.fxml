@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**********************************************
+Workshop 4&5
+Course: APD545 - Semester Winter 2026
+Last Name: Mahfuz
+First Name: Abdullah Al
+ID:180377236
+Section:NAA
+This assignment represents my own work in accordance with Seneca Academic Policy.
+Signature: Abdullah Al Mahfuz
+Date: 24 Feb 2026
+**********************************************/
+-->
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="900" prefWidth="1400" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+
+    <padding>
+        <Insets bottom="50" left="50" right="50" top="50" />
+    </padding>
+
+    <!-- TOP AREA -->
+    <top>
+        <VBox alignment="CENTER" spacing="10">
+            <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+            </padding>
+            <Label style="-fx-font-size:30px; -fx-font-weight:bold;" text="NEXUS PROJECTS DASHBOARD" />
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="Search Projects" />
+                <TextField fx:id="searchField" promptText="Search by Title" />
+                <ComboBox fx:id="statusFilter" promptText="Status (Active/Closed)" />
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- LEFT PROJECT LIST -->
+    <left>
+        <ListView fx:id="projectList" prefWidth="250" />
+    </left>
+
+    <!-- CENTER DETAILS -->
+    <center>
+        <VBox spacing="10">
+            <padding>
+                <Insets bottom="15" left="15" right="15" top="15" />
+            </padding>
+
+            <!-- HEADER -->
+            <VBox spacing="5">
+                <Label fx:id="projectTitle" style="-fx-font-size:18px; -fx-font-weight:bold;" />
+
+                <Label fx:id="projectType" />
+
+                <Label fx:id="totalCostLabel" prefHeight="26.0" prefWidth="262.0" style="-fx-font-size: 16px;" text="Total Cost: $0.00" textFill="#11d630" />
+            </VBox>
+
+            <!-- ASSIGNMENT TABLE -->
+            <TableView fx:id="assignmentTable" prefHeight="464.0" prefWidth="1039.0">
+
+                <columns>
+                    <TableColumn fx:id="employeeCol" prefWidth="151.20002096891403" text="Employee Name" />
+
+                    <TableColumn fx:id="roleCol" prefWidth="115.19999694824219" text="Role" />
+
+                    <TableColumn fx:id="hoursCol" prefWidth="111.60003662109375" text="Allocated Hours" />
+
+                    <TableColumn fx:id="costCol" prefWidth="92.79998779296875" text="Cost" />
+                </columns>
+            </TableView>
+
+            <Button fx:id="addTeamMemberButton" prefHeight="52.0" prefWidth="183.0" text="Add Team Member" />
+
+        </VBox>
+    </center>
+
+</BorderPane>

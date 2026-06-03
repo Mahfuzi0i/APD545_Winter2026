@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**********************************************
+Workshop 4&5
+Course: APD545 - Semester Winter 2026
+Last Name: Mahfuz
+First Name: Abdullah Al
+ID:180377236
+Section:NAA
+This assignment represents my own work in accordance with Seneca Academic Policy.
+Signature: Abdullah Al Mahfuz
+Date: 24 Feb 2026
+**********************************************/
+-->
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="900" prefWidth="1400" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+
+    <top>
+        <VBox alignment="CENTER" spacing="20">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+            <Label style="-fx-font-size:20px; -fx-font-weight:bold;" text="ALLOCATE RESOURCES FOR PROJECTS" />
+        </VBox>
+    </top>
+
+    <center>
+        <SplitPane dividerPositions="0.5">
+            <!-- LEFT PANEL -->
+            <VBox spacing="10">
+                <padding>
+                    <Insets bottom="20" left="20" right="20" top="20" />
+                </padding>
+
+                <Label style="-fx-font-weight:bold;" text="New Assignment" />
+
+                <ComboBox fx:id="skillFilter" prefHeight="26.0" prefWidth="151.0" promptText="Filter by Skill" />
+
+                <ComboBox fx:id="employeeBox" prefHeight="26.0" prefWidth="151.0" promptText="Select Employee" />
+
+                <Label text="Select Role" />
+                <TextField fx:id="roleField" promptText="Role" />
+
+                <Label text="Specify Hours" />
+                <TextField fx:id="hoursField" promptText="New Hours" />
+
+                <Label fx:id="projectedLoadLabel" text="Projected Load: 0" />
+
+                <HBox spacing="20">
+                    <Button fx:id="confirmButton" prefHeight="34.0" prefWidth="151.0" text="Confirm" />
+                    <Button fx:id="cancelButton" prefHeight="34.0" prefWidth="142.0" text="Cancel" />
+                </HBox>
+            </VBox>
+
+            <!-- RIGHT PANEL -->
+            <VBox spacing="10">
+                <padding>
+                    <Insets bottom="15" left="15" right="15" top="15" />
+                </padding>
+
+                <Label style="-fx-font-weight:bold;" text="Current Workload" />
+
+                <TableView fx:id="workloadTable" prefHeight="762.0" prefWidth="666.0">
+                    <columns>
+                        <TableColumn fx:id="projectCol" prefWidth="254.9999915957451" text="Project" />
+                        <TableColumn fx:id="roleCol" prefWidth="193.0" text="Role" />
+                        <TableColumn fx:id="currentHoursCol" prefWidth="219.0" text="Hours" />
+                    </columns>
+                </TableView>
+            </VBox>
+        </SplitPane>
+    </center>
+
+</BorderPane>
